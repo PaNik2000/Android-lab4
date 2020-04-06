@@ -58,7 +58,7 @@ public class MyAppWidgetProvider : AppWidgetProvider() {
                     Calendar.getInstance().get(Calendar.MINUTE) * 60 * 1000 +
                     Calendar.getInstance().get(Calendar.SECOND) * 1000
             val trigger = 24 * 60 * 60 * 1000 - time
-            am.set(AlarmManager.RTC, trigger, pIntent2)
+            am.set(AlarmManager.RTC, System.currentTimeMillis() + trigger, pIntent2)
         }
 
         appWidgetManager?.updateAppWidget(id, widgetViews)
@@ -71,6 +71,19 @@ public class MyAppWidgetProvider : AppWidgetProvider() {
             days[id] = intent.getLongExtra("days", 0)
             val widgetViews = RemoteViews(context?.packageName, R.layout.example_appwidget)
             widgetViews.setTextViewText(R.id.textView, "${days[id]} days")
+
+            val am = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            val intent2 = Intent(context, MyAppWidgetProvider::class.java)
+            intent2.action = "CHANGE_DAYS"
+            intent2.putExtra("widgetID", id)
+            val pIntent2 = PendingIntent.getBroadcast(context, id, intent2, 0)
+
+            val time = Calendar.getInstance().get(Calendar.HOUR_OF_DAY) * 60 * 60 * 1000L +
+                    Calendar.getInstance().get(Calendar.MINUTE) * 60 * 1000 +
+                    Calendar.getInstance().get(Calendar.SECOND) * 1000
+            val trigger = 24 * 60 * 60 * 1000 - time
+            am.set(AlarmManager.RTC, System.currentTimeMillis() + trigger, pIntent2)
+
             AppWidgetManager.getInstance(context).updateAppWidget(id, widgetViews)
         }
         else if (intent?.action == "CHANGE_DAYS") {
@@ -84,7 +97,7 @@ public class MyAppWidgetProvider : AppWidgetProvider() {
                 intent2.action = "SEND_NOTIFICATION"
                 intent2.putExtra("widgetID", id)
                 val pIntent = PendingIntent.getBroadcast(context, id, intent2, 0)
-                am.set(AlarmManager.RTC, 9 * 60 * 60 * 1000, pIntent)
+                am.set(AlarmManager.RTC, System.currentTimeMillis() + 9 * 60 * 60 * 1000, pIntent)
             }
             AppWidgetManager.getInstance(context).updateAppWidget(id, widgetViews)
         }
