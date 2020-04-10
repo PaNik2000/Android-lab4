@@ -58,7 +58,7 @@ public class MyAppWidgetProvider : AppWidgetProvider() {
                     Calendar.getInstance().get(Calendar.MINUTE) * 60 * 1000 +
                     Calendar.getInstance().get(Calendar.SECOND) * 1000
             val trigger = 24 * 60 * 60 * 1000 - time
-            am.set(AlarmManager.RTC, System.currentTimeMillis() + trigger, pIntent2)
+            am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + trigger, pIntent2)
         }
 
         appWidgetManager?.updateAppWidget(id, widgetViews)
@@ -82,7 +82,7 @@ public class MyAppWidgetProvider : AppWidgetProvider() {
                     Calendar.getInstance().get(Calendar.MINUTE) * 60 * 1000 +
                     Calendar.getInstance().get(Calendar.SECOND) * 1000
             val trigger = 24 * 60 * 60 * 1000 - time
-            am.set(AlarmManager.RTC, System.currentTimeMillis() + trigger, pIntent2)
+            am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + trigger, pIntent2)
 
             AppWidgetManager.getInstance(context).updateAppWidget(id, widgetViews)
         }
@@ -97,7 +97,7 @@ public class MyAppWidgetProvider : AppWidgetProvider() {
                 intent2.action = "SEND_NOTIFICATION"
                 intent2.putExtra("widgetID", id)
                 val pIntent = PendingIntent.getBroadcast(context, id, intent2, 0)
-                am.set(AlarmManager.RTC, System.currentTimeMillis() + 9 * 60 * 60 * 1000, pIntent)
+                am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 9 * 60 * 60 * 1000, pIntent)
             }
             AppWidgetManager.getInstance(context).updateAppWidget(id, widgetViews)
         }
